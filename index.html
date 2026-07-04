@@ -339,9 +339,13 @@
             if (isEditing) {
                 startDragging(e);
             } else {
+                const target = e.currentTarget;
+                const pointerId = e.pointerId;
                 pressTimer = setTimeout(() => {
                     enterEditMode();
-                }, 1000);
+                    // شروع جابجایی بلافاصله پس از ورود به حالت ویرایش
+                    startDraggingManual(target, pointerId);
+                }, 500);
             }
         }
 
@@ -393,9 +397,13 @@
         }
 
         function startDragging(e) {
-            dragItem = e.currentTarget;
+            startDraggingManual(e.currentTarget, e.pointerId);
+        }
+
+        function startDraggingManual(element, pointerId) {
+            dragItem = element;
             dragItem.classList.add('dragging');
-            dragItem.setPointerCapture(e.pointerId);
+            dragItem.setPointerCapture(pointerId);
         }
 
         function moveDragging(e) {
